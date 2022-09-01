@@ -4,17 +4,17 @@ Test for generating random CPPNs.
 Author:     Aaron Stone
 Date:       09/01/2022
 """
-
-
 from make_cppn import make_cppn
 from PIL import Image
 import os
 
+
 IMAGE_X = 32
 IMAGE_Y = 32
-
+NUMBER_ITERATIONS = 100
 SHOW_CPPN = False
 PAUSE_BETWEEN = False
+
 
 directory = "images/"
 
@@ -22,7 +22,7 @@ directory = "images/"
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-for i in range(10):
+for i in range(NUMBER_ITERATIONS):
     cppn = make_cppn(num_inputs=2, num_outputs=3, num_hnodes=10, num_connections=10)
     if SHOW_CPPN:
         cppn.show()
@@ -44,7 +44,9 @@ for i in range(10):
     image = image.resize((256, 256), Image.ANTIALIAS)
     # get size of images/ directory
     images_count = len(os.listdir(directory))
+    # get size of cppns/ directory
+    cppns_count = len(os.listdir("cppns"))
     # save image to images/ directory
     image.save(directory + str(images_count) + ".png")
     image.show()
-    cppn.save("cppns")
+    cppn.save("cppns/"+str(cppns_count))
