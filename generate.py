@@ -6,6 +6,7 @@ Date:       09/01/2022
 """
 from make_cppn import make_cppn
 from PIL import Image
+import networkx as nx
 import os
 
 
@@ -14,6 +15,12 @@ IMAGE_Y = 32
 NUMBER_ITERATIONS = 100
 SHOW_CPPN = False
 PAUSE_BETWEEN = False
+DISCARD_DISCONNECTED = True
+
+NUM_INPUTS = 2
+NUM_OUTPUTS = 3
+NUM_HIDDEN = 45
+NUM_CONNCETIONS = 72
 
 
 image_directory = "images/"
@@ -26,12 +33,26 @@ if not os.path.exists(cppn_directory):
     os.makedirs(cppn_directory)
 
 for i in range(NUMBER_ITERATIONS):
-    cppn = make_cppn(num_inputs=2, num_outputs=3, num_hnodes=10, num_connections=10)
+    cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNCETIONS)
     if SHOW_CPPN:
         cppn.show()
     if PAUSE_BETWEEN:
         # wait for input
         input("Press Enter to continue...")
+
+    if DISCARD_DISCONNECTED:
+        # if there isn't a path from at least one input to at least one output, discard the CPPN
+        valid = False
+        for inode in cppn.inputs:
+            for onode in cppn.outputs:
+                if nx.has_path(cppn.graph, inode, onode):
+                    valid = True
+                    break
+        if not valid:
+            print("Skipping disconnected CPPN")
+            continue
+
+
     image = Image.new("RGB", (IMAGE_X, IMAGE_Y))
     for y in range(IMAGE_Y):
         for x in range(IMAGE_X):
