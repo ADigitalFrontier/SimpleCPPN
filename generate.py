@@ -19,8 +19,8 @@ DISCARD_DISCONNECTED = True
 
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 45
-NUM_CONNCETIONS = 72
+NUM_HIDDEN = 36
+NUM_CONNECTIONS = 36
 
 
 image_directory = "images/"
@@ -33,7 +33,7 @@ if not os.path.exists(cppn_directory):
     os.makedirs(cppn_directory)
 
 for i in range(NUMBER_ITERATIONS):
-    cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNCETIONS)
+    cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNECTIONS)
     if SHOW_CPPN:
         cppn.show()
     if PAUSE_BETWEEN:
