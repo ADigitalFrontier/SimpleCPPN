@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import random
 import json
 import os
 
@@ -36,12 +37,14 @@ class Component:
 
 
     def show(self):
-        nx.draw(self.graph, with_labels=True)
+        labels = nx.get_node_attributes(self.graph, 'label')
+        colors = nx.get_node_attributes(self.graph, 'color')
+        positions = nx.get_node_attributes(self.graph,'position')
+        nx.draw(self.graph, with_labels=True, pos=positions, node_color=colors.values(), labels=labels, font_size=8)
         plt.show()
 
 
-    def add_node(self, node_type="hidden"):
-        print("size is ", self.size)
+    def add_node(self, node_type="hidden", position=(0, 0), color="black"):
         self.size += 1
         if node_type == "input":
             self.inputs.append(self.size)
@@ -53,13 +56,23 @@ class Component:
             raise Exception("Node type not recognized")
         self.graph.add_node(self.size, node_type=node_type)
         # get the node and return it
-        return self.graph.nodes[self.size]
+        node = self.graph.nodes[self.size]
+        node['position'] = position
+        node['color'] = color
+        node['name'] = self.size
+        return node
+
+
+    def propagate(self):
+        for onode in self.outputs:
+            for 
+
+
+
 
 """
 comp1 = Component()
 node = comp1.add_node("input")
 node["coordinates"] = [0,5,1,3,8]
-comp1.save("comp1")"""
-
-comp1 = Component("comp1")
-comp1.show()
+comp1.save("comp1")
+"""
