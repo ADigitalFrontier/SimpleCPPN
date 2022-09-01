@@ -90,13 +90,3 @@ class Component:
                 terminal_node['value'] += root_value * weight
         
         return [self.graph.nodes[node]['value'] for node in self.outputs]
-
-
-
-
-"""
-comp1 = Component()
-node = comp1.add_node("input")
-node["coordinates"] = [0,5,1,3,8]
-comp1.save("comp1")
-"""
