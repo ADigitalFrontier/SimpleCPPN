@@ -16,11 +16,12 @@ NUMBER_ITERATIONS = 100
 SHOW_CPPN = False
 PAUSE_BETWEEN = False
 DISCARD_DISCONNECTED = True
+SHOW_IMAGES = False
 
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 36
-NUM_CONNECTIONS = 36
+NUM_HIDDEN = 18
+NUM_CONNECTIONS = 54
 
 
 image_directory = "images/"
@@ -72,5 +73,6 @@ for i in range(NUMBER_ITERATIONS):
     cppns_count = len(os.listdir(cppn_directory))
     # save image to images/ directory
     image.save(image_directory + str(images_count) + ".png")
-    image.show()
+    if SHOW_IMAGES:
+        image.show()
     cppn.save(cppn_directory+str(cppns_count))
