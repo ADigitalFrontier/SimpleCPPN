@@ -50,8 +50,8 @@ def make_cppn(min_hnodes, max_hnodes, min_connections, max_connections):
     return cppn
 
 
-for cppn_iter in range(50):
-    cppn = make_cppn(3, 15, 3, 15)
+for cppn_iter in range(20):
+    cppn = make_cppn(1, 25, 1, 25)
     # if there is no path from any of the inputs to any of the outputs, skip this cppn
     is_valid = False
     for inode in cppn.inputs:
@@ -102,9 +102,10 @@ row_size = 5
 grid = Image.new("RGB", (num_x*len(images), num_y*math.ceil(len(images)/row_size)))
 
 j = -1
-for i in range(len(images)):
+for i in range(5, len(images)):
     if i % row_size == 0:
         j += 1
+        i -= 5
     print(i, j)
     grid.paste(images[i], (i*num_x, j*num_x))
 
