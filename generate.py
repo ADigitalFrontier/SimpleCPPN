@@ -16,11 +16,14 @@ SHOW_CPPN = False
 PAUSE_BETWEEN = False
 
 
-directory = "images/"
+image_directory = "images/"
+cppn_directory = "cppns/"
 
 # create the directory if it doesn't exist
-if not os.path.exists(directory):
-    os.makedirs(directory)
+if not os.path.exists(image_directory):
+    os.makedirs(image_directory)
+if not os.path.exists(cppn_directory):
+    os.makedirs(cppn_directory)
 
 for i in range(NUMBER_ITERATIONS):
     cppn = make_cppn(num_inputs=2, num_outputs=3, num_hnodes=10, num_connections=10)
@@ -43,10 +46,10 @@ for i in range(NUMBER_ITERATIONS):
     # resize to 256x256
     image = image.resize((256, 256), Image.ANTIALIAS)
     # get size of images/ directory
-    images_count = len(os.listdir(directory))
+    images_count = len(os.listdir(image_directory))
     # get size of cppns/ directory
     cppns_count = len(os.listdir("cppns"))
     # save image to images/ directory
-    image.save(directory + str(images_count) + ".png")
+    image.save(cppn_directory + str(images_count) + ".png")
     image.show()
     cppn.save("cppns/"+str(cppns_count))
