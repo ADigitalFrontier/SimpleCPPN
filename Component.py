@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from Activations import identity_activation
 import random
 import json
 import os
@@ -17,7 +18,7 @@ class Component:
             self.inputs = []
             self.hidden = []
             self.outputs = []
-            self.graph = nx.Graph()
+            self.graph = nx.DiGraph()
 
         ids = [i for i in self.graph.nodes()]
         if len(ids) == 0:
@@ -40,7 +41,7 @@ class Component:
         labels = nx.get_node_attributes(self.graph, 'label')
         colors = nx.get_node_attributes(self.graph, 'color')
         positions = nx.get_node_attributes(self.graph,'position')
-        nx.draw(self.graph, with_labels=True, pos=positions, node_color=colors.values(), labels=labels, font_size=8)
+        nx.draw(self.graph, with_labels=True, pos=positions, node_color=colors.values(), labels=labels, font_size=8, arrows=True)
         plt.show()
 
 
@@ -60,7 +61,36 @@ class Component:
         node['position'] = position
         node['color'] = color
         node['name'] = self.size
+        node['value'] = 0
+        node['activation'] = identity_activation
         return node
+
+    
+    def evaluate(self):
+        # for all non-input nodes, set the value to 0
+        for node in self.graph.nodes():
+            if node not in self.inputs:
+                self.graph.nodes[node]['value'] = 0
+
+        # topological sort the graph
+        sorted_nodes = nx.topological_sort(self.graph)
+        for node in sorted_nodes:
+            # get all outgoing connections
+            outgoing_edges = self.graph.out_edges(node)
+            for edge in outgoing_edges:
+                # get terminal node
+                terminal_node = self.graph.nodes[edge[1]]
+                # get the weight of the edge
+                weight = self.graph.edges[edge]['weight']
+                # get the value of the root node
+                root_node = self.graph.nodes[node]
+                # if the root node has an activation function, apply it
+                root_value = root_node['value']
+                root_value = root_node['activation'](root_value)
+                terminal_node['value'] += root_value * weight
+        
+        return [self.graph.nodes[node]['value'] for node in self.outputs]
+
 
 
 

@@ -1,5 +1,6 @@
 from Component import Component
 from Activations import ActivationFunctionSet
+from PIL import Image
 import networkx as nx
 import random
 
@@ -36,7 +37,6 @@ def make_cppn(min_hnodes, max_hnodes, min_connections, max_connections):
         while invalid:
             node_a = random.choice(node_pool_a)['name']
             node_b = random.choice(node_pool_b)['name']
-            print(node_a, node_b)
             if node_a < node_b:
                 invalid = False
         cppn.graph.add_edge(node_a, node_b, weight=random.random()*2-1)
@@ -44,7 +44,26 @@ def make_cppn(min_hnodes, max_hnodes, min_connections, max_connections):
     return cppn
 
 
-for i in range(10):
-    cppn = make_cppn(3, 10, 3, 10)
-    cppn.show()
-    cppn.save("cppn_"+str(i))
+cppn = make_cppn(3, 10, 3, 10)
+cppn.show()
+
+num_x = 100
+num_y = 100
+
+# generate image of size num_x x num_y
+image = Image.new("RGB", (num_x, num_y))
+
+for i in range(num_y):
+    y = i/num_x
+    row = []
+    for j in range(num_x):
+        x = j/num_y
+        # print("X: " + str(x), "Y: " + str(y))
+        cppn.graph.nodes[1]['value'] = x
+        cppn.graph.nodes[2]['value'] = y
+        out = cppn.evaluate()
+        color = int(abs(out[0]) * 255)
+        # set the pixel to the color
+        image.putpixel((j, i), (color, color, color))
+
+image.show()
