@@ -63,12 +63,6 @@ class Component:
         return node
 
 
-    def propagate(self):
-        for onode in self.outputs:
-            for 
-
-
-
 
 """
 comp1 = Component()
