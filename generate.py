@@ -48,8 +48,8 @@ for i in range(NUMBER_ITERATIONS):
     # get size of images/ directory
     images_count = len(os.listdir(image_directory))
     # get size of cppns/ directory
-    cppns_count = len(os.listdir("cppns"))
+    cppns_count = len(os.listdir(cppn_directory))
     # save image to images/ directory
-    image.save(cppn_directory + str(images_count) + ".png")
+    image.save(image_directory + str(images_count) + ".png")
     image.show()
-    cppn.save("cppns/"+str(cppns_count))
+    cppn.save(cppn_directory+str(cppns_count))
