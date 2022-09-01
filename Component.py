@@ -1,9 +1,10 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import json
+import os
 
 class Component:
-    def __init__(self, directory):
+    def __init__(self, directory=None):
         if directory is not None:
              with open(directory+"/data.json", 'r') as f:
                 data = json.load(f)
@@ -18,11 +19,17 @@ class Component:
             self.graph = nx.Graph()
 
         ids = [i for i in self.graph.nodes()]
-        self.size = 0 + max(ids)
+        if len(ids) == 0:
+            self.size = 0
+        else:
+            self.size = max(ids)
 
 
     def save(self, directory):
         data_dict = {"inputs": self.inputs, "hidden": self.hidden, "outputs": self.outputs}
+        # create the directory if it doesn't exist
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         with open(directory+"/data.json", 'w') as f:
             json.dump(data_dict, f)
         nx.write_gpickle(self.graph, directory+"/component.pkl")
@@ -45,10 +52,14 @@ class Component:
         else:
             raise Exception("Node type not recognized")
         self.graph.add_node(self.size, node_type=node_type)
+        # get the node and return it
+        return self.graph.nodes[self.size]
 
+"""
+comp1 = Component()
+node = comp1.add_node("input")
+node["coordinates"] = [0,5,1,3,8]
+comp1.save("comp1")"""
 
-comp1 = Component("component")
+comp1 = Component("comp1")
 comp1.show()
-comp1.add_node("input")
-comp1.show()
-comp1.save("component")
