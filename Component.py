@@ -1,7 +1,12 @@
+"""
+Author:     Aaron Stone
+Date:       09/01/2022
+"""
+
+
 import networkx as nx
 import matplotlib.pyplot as plt
 from Activations import identity_activation
-import random
 import json
 import os
 

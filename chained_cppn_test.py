@@ -1,3 +1,10 @@
+"""
+Isolated this functionality; needs testing.
+
+Author:     Aaron Stone
+Date:       09/01/2022
+"""
+
 from PIL import Image
 from make_cppn import make_cppn
 
