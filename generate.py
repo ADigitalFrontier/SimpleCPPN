@@ -13,6 +13,9 @@ import os
 IMAGE_X = 32
 IMAGE_Y = 32
 
+SHOW_CPPN = False
+PAUSE_BETWEEN = False
+
 directory = "images/"
 
 # create the directory if it doesn't exist
@@ -20,16 +23,17 @@ if not os.path.exists(directory):
     os.makedirs(directory)
 
 for i in range(10):
-    cppn = make_cppn(num_inputs=3, num_outputs=3, num_hnodes=10, num_connections=10)
-    cppn.show()
-    # wait for input
-    input("Press Enter to continue...")
+    cppn = make_cppn(num_inputs=2, num_outputs=3, num_hnodes=10, num_connections=10)
+    if SHOW_CPPN:
+        cppn.show()
+    if PAUSE_BETWEEN:
+        # wait for input
+        input("Press Enter to continue...")
     image = Image.new("RGB", (IMAGE_X, IMAGE_Y))
     for y in range(IMAGE_Y):
         for x in range(IMAGE_X):
             cppn.graph.nodes[1]['value'] = x/IMAGE_X
             cppn.graph.nodes[2]['value'] = y/IMAGE_Y
-            cppn.graph.nodes[3]['value'] = 1
             out = cppn.evaluate()
             red = int(abs(out[0]) * 255)
             green = int(abs(out[1]) * 255)
@@ -43,4 +47,4 @@ for i in range(10):
     # save image to images/ directory
     image.save(directory + str(images_count) + ".png")
     image.show()
-    cppn.save()
+    cppn.save("cppns")
