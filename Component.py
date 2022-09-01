@@ -89,4 +89,9 @@ class Component:
                 root_value = root_node['activation'](root_value)
                 terminal_node['value'] += root_value * weight
         
-        return [self.graph.nodes[node]['value'] for node in self.outputs]
+        # clamp the values to be between 0 and 1
+        outputs = []
+        for node in self.outputs:
+            out = max(0, min(1, self.graph.nodes[node]['value']))
+            outputs.append(out)
+        return outputs
