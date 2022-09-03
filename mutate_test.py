@@ -18,7 +18,7 @@ ORIGINAL = None
 SAVE_DIR = "evolutions"
 IMAGE_X = 24
 IMAGE_Y = 24
-NUM_PER_GENERATION = 50
+NUM_PER_GENERATION = 10
 
 # create the directory if it doesn't exist
 if not os.path.exists(SAVE_DIR):
@@ -63,6 +63,7 @@ current_cppn = ORIGINAL
 
 inputs = []
 if MODIFY_IMAGE:
+    max_dimension = 256
     # scale down the image so the highest dimension is 64
     image = Image.open(TEST_IMAGE)
     # get x and y dimensions
@@ -72,12 +73,12 @@ if MODIFY_IMAGE:
     # get highest dimension
     if x_dim > y_dim:
         max_dim = x_dim
-        new_x = 64
-        new_y = int((y_dim/x_dim) * 64)
+        new_x = max_dimension
+        new_y = int((y_dim/x_dim) * max_dimension)
     else:
         max_dim = y_dim
-        new_y = 64
-        new_x = int((x_dim/y_dim) * 64)
+        new_y = max_dimension
+        new_x = int((x_dim/y_dim) * max_dimension)
 
     image = image.resize((new_x, new_y), Image.ANTIALIAS)
     # for each pixel in the image, get the RGB values
@@ -125,7 +126,7 @@ while keep_going:
                 b = int(abs(coord[2] * 255))
                 image.putpixel((x, y), (r, g, b))
                 # resize the image to the 256x256
-                image = image.resize((256, 256), Image.ANTIALIAS)
+            image = image.resize((256, 256), Image.ANTIALIAS)
             images.append(image)
         elif MAP_OUTPUT_COORDS:
             images.append(make_image_with_output_coords(cppn, IMAGE_X, IMAGE_Y, image_directory=current_dir, save=False, resize_x=256, resize_y=256))
