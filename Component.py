@@ -124,13 +124,15 @@ class Component:
             try:
                 self.graph.nodes[node]['age'] += 1
             except Exception as e:
-                print("Error: ", e, node)
+                pass 
+                # print("Error: ", e, node)
         # add one to the age of all edges
         for edge in self.graph.edges:
             try:
                 self.graph.edges[edge]['age'] += 1
             except Exception as e:
-                print("Error: ", e, edge)
+                pass
+                # print("Error: ", e, edge)
 
         if prob_table is None:
             PROB_TABLE = {
