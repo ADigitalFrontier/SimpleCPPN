@@ -47,6 +47,13 @@ def make_cppn(num_inputs=2, num_outputs=1, num_hnodes=10, num_connections=10):
             node_b = random.choice(node_pool_b)
             if node_a < node_b:
                 invalid = False
-        cppn.graph.add_edge(node_a, node_b, weight=random.random()*2-1)
+        cppn.graph.add_edge(node_a, node_b, weight=random.random()*2-1, age=0)
+        # get the edge
+        edge = cppn.graph[node_a][node_b]
 
+    return cppn
+
+
+def load_cppn(directory):
+    cppn = Component(directory)
     return cppn

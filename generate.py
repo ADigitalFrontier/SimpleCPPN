@@ -4,24 +4,28 @@ Test for generating random CPPNs.
 Author:     Aaron Stone
 Date:       09/01/2022
 """
-from make_cppn import make_cppn
+from make_cppn import make_cppn, load_cppn
 from PIL import Image
 import networkx as nx
 import os
 
 
-IMAGE_X = 32
-IMAGE_Y = 32
-NUMBER_ITERATIONS = 100
+IMAGE_X = 64
+IMAGE_Y = 64
+NUMBER_ITERATIONS = 5
 SHOW_CPPN = False
 PAUSE_BETWEEN = False
 DISCARD_DISCONNECTED = True
 SHOW_IMAGES = False
 
+EVOLVE = True
+
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
 NUM_HIDDEN = 18
 NUM_CONNECTIONS = 54
+
+CPPN_DIR = "cppns/29"
 
 
 image_directory = "images/"
@@ -34,7 +38,12 @@ if not os.path.exists(cppn_directory):
     os.makedirs(cppn_directory)
 
 for i in range(NUMBER_ITERATIONS):
-    cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNECTIONS)
+    if CPPN_DIR is None:
+        cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNECTIONS)
+    else:
+        cppn = load_cppn(CPPN_DIR)
+    if EVOLVE:
+        cppn.evolve()
     if SHOW_CPPN:
         cppn.show()
     if PAUSE_BETWEEN:
