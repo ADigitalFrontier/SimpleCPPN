@@ -1,5 +1,5 @@
 """
-Test for generating random CPPNs.
+Test for loading a CPPN
 
 Author:     Aaron Stone
 Date:       09/01/2022

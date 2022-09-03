@@ -1,4 +1,6 @@
 """
+Component class; used to represent a neural network
+
 Author:     Aaron Stone
 Date:       09/01/2022
 """
@@ -39,6 +41,11 @@ class Component:
             self.size = 0
         else:
             self.size = max(ids)
+
+    
+    def set_inputs(self, coordinates):
+        for i in range(len(coordinates)):
+            self.graph.nodes[self.inputs[i]]['value'] = coordinates[i]
 
 
     def save(self, directory):
@@ -167,6 +174,8 @@ class Component:
         # pick a random integer from -5 to 5
         if add_node_amount is None:
             add_node_amount = max(0, random.randint(-5, 5))
+        else:
+            add_node_amount = max(0, random.randint(-add_node_amount, add_node_amount))
 
         for i in range(add_node_amount):
             if random.random() < PROB_TABLE["intercept_rate"]:
@@ -196,6 +205,8 @@ class Component:
         # pick a random integer from -5 to 5
         if add_edge_amount is None:
             add_edge_amount = max(0, random.randint(-5, 5))
+        else:
+            add_edge_amount = max(0, random.randint(-add_edge_amount, add_edge_amount))
         
         for i in range(add_edge_amount):
             # pick two nodes

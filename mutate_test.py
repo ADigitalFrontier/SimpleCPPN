@@ -1,5 +1,5 @@
 """
-Test for generating random CPPNs.
+Test for generating random CPPNs
 
 Author:     Aaron Stone
 Date:       09/01/2022
@@ -8,7 +8,7 @@ from make_cppn import load_cppn, make_cppn
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw 
-from make_image import make_image
+from make_image import make_image, make_image_with_output_coords
 from PIL import ImageFont
 from PIL import ImageDraw
 import os
@@ -18,7 +18,7 @@ ORIGINAL = None
 SAVE_DIR = "evolutions"
 IMAGE_X = 24
 IMAGE_Y = 24
-NUM_PER_GENERATION = 10
+NUM_PER_GENERATION = 50
 
 # create the directory if it doesn't exist
 if not os.path.exists(SAVE_DIR):
@@ -27,14 +27,16 @@ if not os.path.exists(SAVE_DIR):
 # CPPN SETTINGS
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 18
-NUM_CONNECTIONS = 36
-LABEL_FONT = 72
+NUM_HIDDEN = 24
+NUM_CONNECTIONS = 42
+LABEL_FONT = 144
 STABILIZATION_AGE = 20
-ADD_NODE_AMOUNT = 3
-ADD_EDGE_AMOUNT = 5
-EDGE_MUTATE_RATE = .3
-NODE_MUTATE_RATE = .3
+ADD_NODE_AMOUNT = 8
+ADD_EDGE_AMOUNT = 8
+EDGE_MUTATE_RATE = .125
+NODE_MUTATE_RATE = .1
+
+MAP_OUTPUT_COORDS = False
 
 PROB_TABLE = {
     "edge": {
@@ -73,10 +75,15 @@ while keep_going:
             cppn = load_cppn(current_cppn)
             cppn.evolve(add_node_amount=ADD_NODE_AMOUNT, add_edge_amount=ADD_EDGE_AMOUNT, edge_mutate_rate=EDGE_MUTATE_RATE, node_mutate_rate=NODE_MUTATE_RATE, prob_table=PROB_TABLE)
         else:
+            if MAP_OUTPUT_COORDS:
+                NUM_OUTPUTS += 2
             cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNECTIONS)
         cppn_dir = current_dir + "/" + str(i)
         cppn.save(cppn_dir)
-        images.append(make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=current_dir, save=False, resize_x=256, resize_y=256))
+        if MAP_OUTPUT_COORDS:
+            images.append(make_image_with_output_coords(cppn, IMAGE_X, IMAGE_Y, image_directory=current_dir, save=False, resize_x=256, resize_y=256))
+        else:
+            images.append(make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=current_dir, save=False, resize_x=256, resize_y=256))
     
     # create a row of images from array images
     image_row = Image.new("RGB", (256 * NUM_PER_GENERATION, 256+LABEL_FONT))
