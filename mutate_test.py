@@ -16,9 +16,9 @@ import os
 
 ORIGINAL = None # "evolutions/iteration_0/5"
 SAVE_DIR = "evolutions"
-IMAGE_X = 32
-IMAGE_Y = 32
-NUM_PER_GENERATION = 12
+IMAGE_X = 16
+IMAGE_Y = 16
+NUM_PER_GENERATION = 100
 
 # create the directory if it doesn't exist
 if not os.path.exists(SAVE_DIR):
@@ -27,8 +27,8 @@ if not os.path.exists(SAVE_DIR):
 # CPPN SETTINGS
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 45
-NUM_CONNECTIONS = 63
+NUM_HIDDEN = 17
+NUM_CONNECTIONS = 36
 LABEL_FONT = 72
 
 PROB_TABLE = {

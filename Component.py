@@ -98,16 +98,20 @@ class Component:
             # get all outgoing connections
             outgoing_edges = self.graph.out_edges(node)
             for edge in outgoing_edges:
-                # get terminal node
-                terminal_node = self.graph.nodes[edge[1]]
-                # get the weight of the edge
-                weight = self.graph.edges[edge]['weight']
-                # get the value of the root node
-                root_node = self.graph.nodes[node]
-                # if the root node has an activation function, apply it
-                root_value = root_node['value']
-                root_value = root_node['activation'](root_value)
-                terminal_node['value'] += root_value * weight
+                try:
+                    # get terminal node
+                    terminal_node = self.graph.nodes[edge[1]]
+                    # get the weight of the edge
+                    weight = self.graph.edges[edge]['weight']
+                    # get the value of the root node
+                    root_node = self.graph.nodes[node]
+                    # if the root node has an activation function, apply it
+                    root_value = root_node['value']
+                    root_value = root_node['activation'](root_value)
+                    terminal_node['value'] += root_value * weight
+                except Exception as e:
+                    # print("Error [113]: ", e, edge, node)
+                    pass
         
         # clamp the values to be between 0 and 1
         outputs = []
