@@ -31,6 +31,10 @@ NUM_HIDDEN = 17
 NUM_CONNECTIONS = 36
 LABEL_FONT = 72
 STABILIZATION_AGE = 20
+ADD_NODE_AMOUNT = 10
+ADD_EDGE_AMOUNT = 10
+EDGE_MUTATE_RATE = .3
+NODE_MUTATE_RATE = .05
 
 PROB_TABLE = {
     "edge": {
@@ -67,7 +71,7 @@ while keep_going:
     for i in range(NUM_PER_GENERATION):
         if ORIGINAL is not None or current_cppn is not None:
             cppn = load_cppn(current_cppn)
-            cppn.evolve(add_node_amount=5, add_edge_amount=5, edge_mutate_rate=.15, node_mutate_rate=.15, prob_table=PROB_TABLE)
+            cppn.evolve(add_node_amount=ADD_NODE_AMOUNT, add_edge_amount=ADD_EDGE_AMOUNT, edge_mutate_rate=EDGE_MUTATE_RATE, node_mutate_rate=NODE_MUTATE_RATE, prob_table=PROB_TABLE)
         else:
             cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNECTIONS)
         cppn_dir = current_dir + "/" + str(i)
