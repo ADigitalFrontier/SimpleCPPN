@@ -16,9 +16,9 @@ import os
 
 ORIGINAL = None
 SAVE_DIR = "evolutions"
-IMAGE_X = 16
-IMAGE_Y = 16
-NUM_PER_GENERATION = 100
+IMAGE_X = 24
+IMAGE_Y = 24
+NUM_PER_GENERATION = 10
 
 # create the directory if it doesn't exist
 if not os.path.exists(SAVE_DIR):
@@ -27,26 +27,26 @@ if not os.path.exists(SAVE_DIR):
 # CPPN SETTINGS
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 17
+NUM_HIDDEN = 18
 NUM_CONNECTIONS = 36
 LABEL_FONT = 72
 STABILIZATION_AGE = 20
-ADD_NODE_AMOUNT = 10
-ADD_EDGE_AMOUNT = 10
+ADD_NODE_AMOUNT = 3
+ADD_EDGE_AMOUNT = 5
 EDGE_MUTATE_RATE = .3
-NODE_MUTATE_RATE = .05
+NODE_MUTATE_RATE = .3
 
 PROB_TABLE = {
     "edge": {
-        "remove": 0.1,
-        "change": .9
+        "remove": 0.3,
+        "change": .7
     },
     "node": {
         "neutralize": .2,
         "remove": 0.3,
         "change": .5
     },
-    "intercept_rate": .6,
+    "intercept_rate": .7,
 }
 
 current_path = ""
