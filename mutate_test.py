@@ -6,7 +6,11 @@ Date:       09/01/2022
 """
 from make_cppn import load_cppn, make_cppn
 from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw 
 from make_image import make_image
+from PIL import ImageFont
+from PIL import ImageDraw
 import os
 
 
@@ -14,7 +18,7 @@ ORIGINAL = None # "evolutions/iteration_0/5"
 SAVE_DIR = "evolutions"
 IMAGE_X = 32
 IMAGE_Y = 32
-NUM_PER_GENERATION = 10
+NUM_PER_GENERATION = 30
 
 # create the directory if it doesn't exist
 if not os.path.exists(SAVE_DIR):
@@ -23,14 +27,16 @@ if not os.path.exists(SAVE_DIR):
 # CPPN SETTINGS
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 18
-NUM_CONNECTIONS = 54
+NUM_HIDDEN = 2
+NUM_CONNECTIONS = 2
 
 current_path = ""
 keep_going = True
 
 current_dir = SAVE_DIR
 current_cppn = ORIGINAL
+
+label_font = 72
 
 # get the number of files in the current directory
 num_iterations = 0
@@ -56,9 +62,15 @@ while keep_going:
         images.append(make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=current_dir, save=False, resize_x=256, resize_y=256))
     
     # create a row of images from array images
-    image_row = Image.new("RGB", (256 * NUM_PER_GENERATION, 256))
+    image_row = Image.new("RGB", (256 * NUM_PER_GENERATION, 256+label_font))
     for i in range(NUM_PER_GENERATION):
-        image_row.paste(images[i], (i * 256, 0))
+        # add a number label to the image
+        draw = ImageDraw.Draw(image_row)
+        # use 48pt font
+        font = ImageFont.truetype("arial.ttf", label_font)
+        # use 48pt font
+        draw.text((i*256, 0),str(i),(255,255,255), font=font)
+        image_row.paste(images[i], (i * 256, label_font))
         
     # save image row to current_dir
     image_row.save(current_dir + "/image_row.png")
