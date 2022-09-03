@@ -120,8 +120,8 @@ class Component:
             outputs.append(out)
         return outputs
 
-    def evolve(self, add_node_amount=None, add_edge_amount=None, edge_mutate_rate=.1, node_mutate_rate=.1, prob_table=None):
-        STABILIZATION_AGE = 100
+    def evolve(self, add_node_amount=None, add_edge_amount=None, edge_mutate_rate=.1, node_mutate_rate=.1, prob_table=None, stabilization_age=50):
+        STABILIZATION_AGE = stabilization_age
 
         # add one to the age of all hidden nodes
         for node in self.hidden:

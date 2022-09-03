@@ -14,7 +14,7 @@ from PIL import ImageDraw
 import os
 
 
-ORIGINAL = None # "evolutions/iteration_0/5"
+ORIGINAL = None
 SAVE_DIR = "evolutions"
 IMAGE_X = 16
 IMAGE_Y = 16
@@ -30,6 +30,7 @@ NUM_OUTPUTS = 3
 NUM_HIDDEN = 17
 NUM_CONNECTIONS = 36
 LABEL_FONT = 72
+STABILIZATION_AGE = 20
 
 PROB_TABLE = {
     "edge": {
