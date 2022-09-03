@@ -8,7 +8,7 @@ from PIL import Image
 import os
 
 
-def make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=None, save=True):
+def make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=None, save=True, resize_x=256, resize_y=256):
     image = Image.new("RGB", (IMAGE_X, IMAGE_Y))
     for y in range(IMAGE_Y):
         for x in range(IMAGE_X):
@@ -21,7 +21,7 @@ def make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=None, save=True):
             image.putpixel((x, y), (red, green, blue))
 
     # resize to 256x256
-    image = image.resize((256, 256), Image.ANTIALIAS)
+    image = image.resize((resize_x, resize_y), Image.ANTIALIAS)
     # get size of images/ directory
     if image_directory is not None:
         images_count = len(os.listdir(image_directory))

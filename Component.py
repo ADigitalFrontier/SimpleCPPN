@@ -121,10 +121,16 @@ class Component:
 
         # add one to the age of all hidden nodes
         for node in self.hidden:
-            self.graph.nodes[node]['age'] += 1
+            try:
+                self.graph.nodes[node]['age'] += 1
+            except Exception as e:
+                print("Error: ", e, node)
         # add one to the age of all edges
         for edge in self.graph.edges:
-            self.graph.edges[edge]['age'] += 1
+            try:
+                self.graph.edges[edge]['age'] += 1
+            except Exception as e:
+                print("Error: ", e, edge)
 
         PROB_TABLE = {
             "edge": {
@@ -197,30 +203,38 @@ class Component:
 
         # for each hidden node
         for node in list(self.hidden):
-            if random.random() < node_mutate_rate * get_prob(self.graph.nodes[node]):
-                rand_num = random.random()
-                neutralize_threshold = PROB_TABLE["node"]["neutralize"]
-                remove_threshold = neutralize_threshold+PROB_TABLE["node"]["remove"]
-                change_threshold = remove_threshold+PROB_TABLE["node"]["change"]
-                if rand_num < neutralize_threshold:
-                    # neutralize the node
-                    self.graph.nodes[node]['activation'] = identity_activation
-                elif rand_num < remove_threshold:
-                    # remove the node
-                    self.graph.remove_node(node)
-                elif rand_num < change_threshold:
-                    # change the node's activation
-                    self.graph.nodes[node]['activation'] = DEFAULT_SET.get_random()
+            try:
+                if random.random() < node_mutate_rate * get_prob(self.graph.nodes[node]):
+                    rand_num = random.random()
+                    neutralize_threshold = PROB_TABLE["node"]["neutralize"]
+                    remove_threshold = neutralize_threshold+PROB_TABLE["node"]["remove"]
+                    change_threshold = remove_threshold+PROB_TABLE["node"]["change"]
+                    if rand_num < neutralize_threshold:
+                        # neutralize the node
+                        self.graph.nodes[node]['activation'] = identity_activation
+                    elif rand_num < remove_threshold:
+                        # remove the node
+                        self.graph.remove_node(node)
+                    elif rand_num < change_threshold:
+                        # change the node's activation
+                        self.graph.nodes[node]['activation'] = DEFAULT_SET.get_random()
+            except Exception as e:
+                # print("Error [222]: ", e, node)
+                pass
 
         # for each edge
         for edge in list(self.graph.edges):
-            if random.random() < edge_mutate_rate * get_prob(self.graph.edges[edge]):
-                rand_num = random.random()
-                remove_threshold = PROB_TABLE["edge"]["remove"]
-                change_threshold = remove_threshold+PROB_TABLE["edge"]["change"]
-                if rand_num < remove_threshold:
-                    # remove the edge
-                    self.graph.remove_edge(edge[0], edge[1])
-                elif rand_num < change_threshold:
-                    # change the edge's weight
-                    self.graph.edges[edge]['weight'] += get_edge_modification(self.graph.edges[edge])
+            try:
+                if random.random() < edge_mutate_rate * get_prob(self.graph.edges[edge]):
+                    rand_num = random.random()
+                    remove_threshold = PROB_TABLE["edge"]["remove"]
+                    change_threshold = remove_threshold+PROB_TABLE["edge"]["change"]
+                    if rand_num < remove_threshold:
+                        # remove the edge
+                        self.graph.remove_edge(edge[0], edge[1])
+                    elif rand_num < change_threshold:
+                        # change the edge's weight
+                        self.graph.edges[edge]['weight'] += get_edge_modification(self.graph.edges[edge])
+            except Exception as e:
+                # print("Error [238]: ", e, edge)
+                pass
