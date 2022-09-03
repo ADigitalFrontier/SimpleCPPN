@@ -116,7 +116,7 @@ class Component:
             outputs.append(out)
         return outputs
 
-    def evolve(self, add_node_amount=None, add_edge_amount=None, edge_mutate_rate=.1, node_mutate_rate=.1):
+    def evolve(self, add_node_amount=None, add_edge_amount=None, edge_mutate_rate=.1, node_mutate_rate=.1, prob_table=None):
         STABILIZATION_AGE = 100
 
         # add one to the age of all hidden nodes
@@ -132,18 +132,21 @@ class Component:
             except Exception as e:
                 print("Error: ", e, edge)
 
-        PROB_TABLE = {
-            "edge": {
-                "remove": 0.1,
-                "change": .9
-            },
-            "node": {
-                "neutralize": .3,
-                "remove": 0.3,
-                "change": .4
-            },
-            "intercept_rate": .6,
-        }
+        if prob_table is None:
+            PROB_TABLE = {
+                "edge": {
+                    "remove": 0.1,
+                    "change": .9
+                },
+                "node": {
+                    "neutralize": .3,
+                    "remove": 0.3,
+                    "change": .4
+                },
+                "intercept_rate": .6,
+            }
+        else:
+            PROB_TABLE = prob_table
 
         def get_edge_modification(edge):
             amount = random.random()*2-1

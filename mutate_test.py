@@ -18,7 +18,7 @@ ORIGINAL = None # "evolutions/iteration_0/5"
 SAVE_DIR = "evolutions"
 IMAGE_X = 32
 IMAGE_Y = 32
-NUM_PER_GENERATION = 30
+NUM_PER_GENERATION = 12
 
 # create the directory if it doesn't exist
 if not os.path.exists(SAVE_DIR):
@@ -27,16 +27,28 @@ if not os.path.exists(SAVE_DIR):
 # CPPN SETTINGS
 NUM_INPUTS = 2
 NUM_OUTPUTS = 3
-NUM_HIDDEN = 2
-NUM_CONNECTIONS = 2
+NUM_HIDDEN = 45
+NUM_CONNECTIONS = 63
+LABEL_FONT = 72
+
+PROB_TABLE = {
+    "edge": {
+        "remove": 0.1,
+        "change": .9
+    },
+    "node": {
+        "neutralize": .2,
+        "remove": 0.3,
+        "change": .5
+    },
+    "intercept_rate": .6,
+}
 
 current_path = ""
 keep_going = True
 
 current_dir = SAVE_DIR
 current_cppn = ORIGINAL
-
-label_font = 72
 
 # get the number of files in the current directory
 num_iterations = 0
@@ -54,7 +66,7 @@ while keep_going:
     for i in range(NUM_PER_GENERATION):
         if ORIGINAL is not None or current_cppn is not None:
             cppn = load_cppn(current_cppn)
-            cppn.evolve()
+            cppn.evolve(add_node_amount=5, add_edge_amount=5, edge_mutate_rate=.15, node_mutate_rate=.15, prob_table=PROB_TABLE)
         else:
             cppn = make_cppn(num_inputs=NUM_INPUTS, num_outputs=NUM_OUTPUTS, num_hnodes=NUM_HIDDEN, num_connections=NUM_CONNECTIONS)
         cppn_dir = current_dir + "/" + str(i)
@@ -62,15 +74,15 @@ while keep_going:
         images.append(make_image(cppn, IMAGE_X, IMAGE_Y, image_directory=current_dir, save=False, resize_x=256, resize_y=256))
     
     # create a row of images from array images
-    image_row = Image.new("RGB", (256 * NUM_PER_GENERATION, 256+label_font))
+    image_row = Image.new("RGB", (256 * NUM_PER_GENERATION, 256+LABEL_FONT))
     for i in range(NUM_PER_GENERATION):
         # add a number label to the image
         draw = ImageDraw.Draw(image_row)
         # use 48pt font
-        font = ImageFont.truetype("arial.ttf", label_font)
+        font = ImageFont.truetype("arial.ttf", LABEL_FONT)
         # use 48pt font
         draw.text((i*256, 0),str(i),(255,255,255), font=font)
-        image_row.paste(images[i], (i * 256, label_font))
+        image_row.paste(images[i], (i * 256, LABEL_FONT))
         
     # save image row to current_dir
     image_row.save(current_dir + "/image_row.png")
